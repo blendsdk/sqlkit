@@ -1,0 +1,29 @@
+{
+  "name": "@blendsdk/postgresql",
+  "version": "1.0.0",
+  "description": "A Promise based Database Access library for PostgreSQL",
+  "main": "dist/index.js",
+  "author": "Gevik Babakhani",
+  "license": "MIT",
+  "types": "./dist/index.ts",
+  "scripts": {
+    "build": "rm -fR ./dist && tsc",
+    "watch": "rm -fR ./dist && tsc -w ",
+    "fiddle": "node ./dist/fiddle.js",
+    "test": "jest --detectOpenHandles"
+  },
+  "dependencies": {
+    "pg": "^7.11.0",
+    "typescript": "^3.5.2",
+    "winston": "^3.2.1",
+    "yesql": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/pg": "^7.4.14",
+    "@types/yesql": "^3.2.1",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "tslib": "^1.10.0"
+  }
+}

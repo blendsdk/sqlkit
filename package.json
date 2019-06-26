@@ -17,7 +17,7 @@
     "postgresql"
   ],
   "license": "MIT",
-  "types": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rm -fR ./dist && tsc",
     "watch": "rm -fR ./dist && tsc -w ",

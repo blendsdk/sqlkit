@@ -438,15 +438,3 @@ const logger = winston.createLogger({
  */
 registerDatabaseLogger(logger);
 ```
-
-## Advanced
-
-### Method signatures
-
-```
-
-```
-
-```
-
-```

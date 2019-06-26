@@ -1,9 +1,14 @@
 {
-  "name": "@blendsdk/postgresql",
-  "version": "1.0.0",
+  "name": "@blendsdk/sqlkit",
+  "version": "0.9.0",
   "description": "A Promise based Database Access library for PostgreSQL",
   "main": "dist/index.js",
-  "author": "Gevik Babakhani",
+  "author": "Gevik Babakhani <gevikb@gmail.com>",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/blendsdk/sqlkit.git"
+  },
+  "keywords": ["sql","query","dal","data access layer","postgres","postgresql"],
   "license": "MIT",
   "types": "./dist/index.ts",
   "scripts": {

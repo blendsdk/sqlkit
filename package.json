@@ -1,6 +1,6 @@
 {
   "name": "@blendsdk/sqlkit",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "A Promise based Database Access library for PostgreSQL",
   "main": "dist/index.js",
   "author": "Gevik Babakhani <gevikb@gmail.com>",

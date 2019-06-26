@@ -28,13 +28,13 @@ const query = "SELECT * FROM employee WHERE id = :employee_id";
 For yarn
 
 ```
-yarn add @blendsdk/sqlkit --save
+yarn add @blendsdk/sqlkit pg @types/pg --save
 ```
 
 For npm
 
 ```
-npm install @blendsdk/@sqlkit --save
+npm install @blendsdk/@sqlkit pg @types/pg --save
 ```
 
 # Usage

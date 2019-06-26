@@ -24,14 +24,14 @@ export interface IQueryOptions<InputType, OutputType> {
      *
      * @memberof IQueryOptions
      */
-    inConverter?: (record: InputType) => any;
+    inConverter?: (record: InputType) => InputType;
     /**
      * A callback function that can be used to apply changes to a
      * record when the record is returned from a query execution.
      *
      * @memberof IQueryOptions
      */
-    outConverter?: (record: OutputType) => any;
+    outConverter?: (record: OutputType) => OutputType;
 }
 
 /**

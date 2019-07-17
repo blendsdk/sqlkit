@@ -1,4 +1,4 @@
-import { IQueryOptions, executeQuery } from "./executeQuery";
+import { IQueryOptions, executeQuery, TDynamicQuery } from "./executeQuery";
 import { DBConnection } from "./connection";
 
 /**
@@ -11,7 +11,7 @@ import { DBConnection } from "./connection";
  * @param {IQueryOptions} [options]
  * @returns
  */
-export function sql_query<ReturnType, InputType>(query: string, options?: IQueryOptions<InputType, ReturnType>) {
+export function sql_query<ReturnType, InputType>(query: string | TDynamicQuery<InputType>, options?: IQueryOptions<InputType, ReturnType>) {
     options = options || {};
     return async function (parameters?: InputType, connection?: DBConnection): Promise<ReturnType> {
         return executeQuery<ReturnType, InputType>(query, parameters, options, connection);

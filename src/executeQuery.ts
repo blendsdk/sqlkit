@@ -1,5 +1,16 @@
 import { DBConnection, createConnection, IQueryResult, databaseLogger } from "./connection";
 import { pg as named } from "yesql";
+import { isFunction, isNullOrUndefined } from "util";
+import { QueryResult } from "pg";
+
+export interface IDynamicQuery {
+    sql: string;
+    parameters?: any;
+    named?: boolean;
+}
+
+export type TDynamicQuery<InputType> = (parameters: InputType) => IDynamicQuery;
+
 
 /**
  * Interface for defining query options for the
@@ -46,7 +57,7 @@ export interface IQueryOptions<InputType, OutputType> {
  * @param {DBConnection} [connection]
  * @returns {Promise<ReturnType>}
  */
-export function executeQuery<ReturnType, InputType>(query: string, parameters?: any, options?: IQueryOptions<InputType, ReturnType>, connection?: DBConnection): Promise<ReturnType> {
+export function executeQuery<ReturnType, InputType>(query: string | TDynamicQuery<InputType>, parameters?: any, options?: IQueryOptions<InputType, ReturnType>, connection?: DBConnection): Promise<ReturnType> {
     return new Promise(async (resolve, reject) => {
         try {
             options = options || {};
@@ -57,7 +68,20 @@ export function executeQuery<ReturnType, InputType>(query: string, parameters?: 
             if (databaseLogger) {
                 databaseLogger.debug({ query, parameters: queryParameters })
             }
-            const result = await (connection || createConnection()).query(named(query)(queryParameters));
+            /**
+             * Check if we have a function and pass the parameter to that function and
+             * expect a SQL statement based on the provided parameters
+             */
+            let queryRequest: any;
+
+            if (isFunction(query)) {
+                const dQuery = query as TDynamicQuery<InputType>,
+                    dRequest = dQuery(queryParameters);
+                queryRequest = dRequest.named ? named(dRequest.sql)(queryParameters) : { text: dRequest.sql, values: dRequest.parameters }
+            } else {
+                queryRequest = named(query as string)(queryParameters);
+            }
+            const result = await (connection || createConnection()).query(queryRequest);
 
             // create a single record array if single:true
             let records = options.single ? [result.rows[0]] : result.rows;

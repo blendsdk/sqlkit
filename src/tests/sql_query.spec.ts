@@ -1,24 +1,54 @@
-import { createConnection, closeConnection } from "../connection";
 import { close } from "fs";
-import { executeQuery } from "../executeQuery";
+import { closeConnection, createConnection } from "../connection";
+import { executeQuery, IDynamicQuery } from "../executeQuery";
 import { sql_query } from "../query";
 
-test('sql_query', async () => {
-
+test("sql_query", async () => {
     const connection = createConnection({
-        database: 'postgres',
-        user: 'postgres',
-        password: 'postgres',
-        host: 'localhost'
+        database: "postgres",
+        user: "postgres",
+        password: "postgres",
+        host: "localhost"
     });
 
-    const get_db_year = sql_query<{ year: number }, unknown>(`select date_part('year', now()) as year`, {
-        single: true
+    const get_db_year = sql_query<{ year: number }, unknown>(
+        `select date_part('year', now()) as year`,
+        {
+            single: true
+        }
+    );
+
+    const result = await get_db_year();
+
+    expect(result.year).toBe(new Date().getFullYear());
+
+    await closeConnection();
+});
+
+test("sql_query dynamic", async () => {
+    const connection = createConnection({
+        database: "postgres",
+        user: "postgres",
+        password: "postgres",
+        host: "localhost"
     });
 
-    const result = await get_db_year()
+    interface InputType {
+        oids: number[];
+    }
 
-    expect(result.year).toBe(new Date().getFullYear())
+    const get_oids = sql_query<any[], InputType>(
+        (params: InputType): IDynamicQuery => {
+            return {
+                named: false,
+                sql: `select * from pg_class where oid in (${params.oids.map((a, i) => { return "$" + (i + 1) }).join(",")})`,
+                parameters: params.oids
+            }
+        }
+    );
+
+    const result = await get_oids({ oids: [112, 113, 174] });
+    expect(result.length).toEqual(3);
 
     await closeConnection();
 });

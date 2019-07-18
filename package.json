@@ -26,6 +26,7 @@
     "patch-publish": "is_git_branch master && yarn build && yarn publish --patch --access public && git push origin master --tags"
   },
   "dependencies": {
+    "@blendsdk/stdlib": "^1.0.5",
     "pg": "^7.11.0",
     "tslib": "^1.10.0",
     "typescript": "^3.5.2",

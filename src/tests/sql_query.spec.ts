@@ -2,6 +2,7 @@ import { close } from "fs";
 import { closeConnection, createConnection } from "../connection";
 import { executeQuery, IDynamicQuery } from "../executeQuery";
 import { sql_query } from "../query";
+import { toSQLParameters } from "../utils";
 
 test("sql_query", async () => {
     const connection = createConnection({
@@ -41,7 +42,7 @@ test("sql_query dynamic", async () => {
         (params: InputType): IDynamicQuery => {
             return {
                 named: false,
-                sql: `select * from pg_class where oid in (${params.oids.map((a, i) => { return "$" + (i + 1) }).join(",")})`,
+                sql: `select * from pg_class where oid in (${toSQLParameters<string>(params.oids)})`,
                 parameters: params.oids
             }
         }
